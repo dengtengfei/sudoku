@@ -1,0 +1,5 @@
+  var showGuess = function(guess, value) {
+    var res = guess.indexOf(value);
+    return res >= 0 ? value : ' ';
+  }
+  module.exports.showGuess = showGuess;

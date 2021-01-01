@@ -1,0 +1,46 @@
+<wxs src="index.wxs" module="tools" />
+<view class="sudoku">
+  <view wx:for="{{data}}" wx:key="" class="row" wx:for-index="x">
+    <block wx:key="" wx:for="{{item}}" wx:for-index="y">
+      <view class="{{item.type > 0 ? (item.duplicate[0] ? 'box duplicate ' + x + ' ' + y : 'box show ' + x + ' ' + y) : 'box base'}}"
+        data-info="{{item}}" data-x="{{x}}" data-y="{{y}}" catchtap='tapBox' style="width: {{boxSize}}px; height: {{boxSize}}px; ">
+        <view wx:if="{{item.value > 0}}" style="font-size: {{fontSize}}px">
+          {{item.value > 0 ? item.value : (item.fill || '')}}</view>
+        <view wx:if="{{item.value === 0}}"
+          style="display:flex; flex-direction:row; text-align:center; font-size:{{guessFontSize}}px">
+          <view style="display:flex;flex-direction:column;font-size:{{guessFontSize}}px; width:{{guessBoxSize}}px">
+            <text wx:if="{{item.guess.length > 0}}" space="emsp">{{tools.showGuess(item.guess, 1)}}</text>
+            <text wx:if="{{item.guess.length > 0}}" space="emsp">{{tools.showGuess(item.guess, 4)}}</text>
+            <text wx:if="{{item.guess.length > 0}}" space="emsp">{{tools.showGuess(item.guess, 7)}}</text>
+          </view>
+          <view style="display:flex;flex-direction:column;font-size:{{guessFontSize}}px; width:{{guessBoxSize}}px">
+            <text wx:if="{{item.guess.length > 0}}" space="emsp">{{tools.showGuess(item.guess, 2)}}</text>
+            <text wx:if="{{item.guess.length > 0}}" space="emsp">{{tools.showGuess(item.guess, 5)}}</text>
+            <text wx:if="{{item.guess.length > 0}}" space="emsp">{{tools.showGuess(item.guess, 8)}}</text>
+          </view>
+          <view style="display:flex;flex-direction:column;font-size:{{guessFontSize}}px; width:{{guessBoxSize}}px">
+            <text wx:if="{{item.guess.length > 0}}" space="emsp">{{tools.showGuess(item.guess, 3)}}</text>
+            <text wx:if="{{item.guess.length > 0}}" space="emsp">{{tools.showGuess(item.guess, 6)}}</text>
+            <text wx:if="{{item.guess.length > 0}}" space="emsp">{{tools.showGuess(item.guess, 9)}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
+<view style="display:flex; flex-direction: row; margin-top: 10px">
+  <button type="primary" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; border: solid 1px;" catchtap='tapBtn' data-index = "1">1</button>
+  <button type="primary" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; border: solid 1px;" catchtap='tapBtn' data-index = "2">2</button>
+  <button type="primary" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; border: solid 1px;" catchtap='tapBtn' data-index = "3">3</button>
+  <button type="primary" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; border: solid 1px;" catchtap='tapBtn' data-index = "4">4</button>
+  <button type="primary" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; border: solid 1px;" catchtap='tapBtn' data-index = "5">5</button>
+  <button type="primary" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; border: solid 1px;" catchtap='tapBtn' data-index = "11">G</button>
+</view>
+<view style="display:flex; flex-direction: row; margin-top: 2.5px">
+  <button type="primary" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; border: solid 1px;" catchtap='tapBtn' data-index = "6">6</button>
+  <button type="primary" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; border: solid 1px;" catchtap='tapBtn' data-index = "7">7</button>
+  <button type="primary" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; border: solid 1px;" catchtap='tapBtn' data-index = "8">8</button>
+  <button type="primary" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; border: solid 1px;" catchtap='tapBtn' data-index = "9">9</button>
+  <button type="primary" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; border: solid 1px;" catchtap='tapBtn' data-index = "10">C</button>
+  <button type="primary" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; border: solid 1px;" catchtap='tapBtn' data-index = "11">M</button>
+</view>

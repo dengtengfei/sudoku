@@ -1,0 +1,58 @@
+/**index.wxss**/
+
+.box {
+  margin: 0;
+  font-family: 'Sim Hei', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:#06bb56;
+  position: relative;
+}
+
+.box.base {
+  background: #cccccc;
+}
+
+.box.duplicate {
+  color: #d9534f;
+}
+
+.row {
+  display: flex;
+  direction: row;
+  justify-content: center;
+  align-content: center;
+}
+
+.row:nth-child(n) {
+  border-top: 1px solid #06ae56;
+}
+
+.row:nth-child(9) {
+  border-bottom: 1px solid #06ae56;
+}
+
+.row .box:nth-child(n) {
+  border-left: 1px solid #06ae56;
+}
+
+.row .box:nth-child(9) {
+  border-right: 1px solid #06ae56;
+}
+
+.row:nth-child(3) {
+  border-bottom: 2px solid #06ae56;
+}
+
+.row:nth-child(6) {
+  border-bottom: 2px solid #06ae56;
+}
+
+.row .box:nth-child(3) {
+  border-right: 2px solid #06ae56;
+}
+
+.row .box:nth-child(6) {
+  border-right: 2px solid #06ae56;
+}
