@@ -2,7 +2,7 @@
 <view class="sudoku" style="margin-top:100px">
   <view wx:for="{{data}}" wx:key="" class="row" wx:for-index="x">
     <block wx:key="" wx:for="{{item}}" wx:for-index="y">
-      <view class="{{item.type > 0 ? ('box ' + (x * 9 + y === currSelectedBoxInSignalMode ? (item.value !== '0' && item.duplicate?'selected duplicate ': 'selected normal ') : (item.value !== '0' && item.duplicate?'unselected duplicate ': 'unselected normal '))) : (x * 9 + y === currSelectedBoxInSignalMode?(item.value !== '0' && item.duplicate?'box base selected duplicate':'box base selected normal'):(item.value !== '0' && item.duplicate?'box base unselected duplicate':'box base unselected normal'))}}"
+      <view class="{{item.type !== 0 ? ('box ' + (x * 9 + y === currSelectedBoxInSignalMode ? (item.value !== '0' && item.duplicate?'selected duplicate ': 'selected normal ') : (item.value !== '0' && item.duplicate?'unselected duplicate ': 'unselected normal '))) : (x * 9 + y === currSelectedBoxInSignalMode?(item.value !== '0' && item.duplicate?'box base selected duplicate':'box base selected normal'):(item.value !== '0' && item.duplicate?'box base unselected duplicate':'box base unselected normal'))}}"
         data-info="{{item}}" data-x="{{x}}" data-y="{{y}}" catchtap='tapBox' style="width: {{boxSize}}px; height: {{boxSize}}px; ">
         <view wx:if="{{item.value !== '0'}}" style="font-size: {{fontSize}}px">
           {{item.value !== '0' ? item.value : (item.fill || '')}}</view>

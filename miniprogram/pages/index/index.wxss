@@ -41,7 +41,7 @@
 }
 
 .box.unselected.duplicate {
-  background: #000;
+  background: #fff;
   color: #d9534f;
 }
 
@@ -64,6 +64,7 @@
 .row:nth-child(9) {
   border-bottom: 1px solid #06ae56;
 }
+
 
 .row .box:nth-child(n) {
   border-left: 1px solid #06ae56;

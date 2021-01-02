@@ -48,37 +48,134 @@ Page({
   },
 
   initData() {
-    let array = new Array(9)
-    for (let i = 0; i < 9; i++) {
-      array[i] = new Array(9)
-      for (let j = 0; j < 9; j++) {
-        if (Math.floor(Math.random() * 10 + 1) % 2 === 1) {
-          array[i][j] = {
-            value: j + 1 + '',
-            guess: [],
-            type: 0,
-          }
-        } else {
-          array[i][j] = {
-            value: '0',
-            guess: ['' + Math.floor(Math.random() * 10 + 1)],
-            type: 1,
-          }
-        }
-      }
-    }
-    this.setData({
-      data: array
-    })
+    // let data = new Array(9)
+    // for (let i = 0; i < 9; i++) {
+    //   data[i] = new Array(9)
+    //   for (let j = 0; j < 9; j++) {
+    //     if (Math.floor(Math.random() * 10 + 1) % 2 === 1) {
+    //       data[i][j] = {
+    //         value: j + 1 + '',
+    //         guess: [],
+    //         type: 0,
+    //       }
+    //     } else {
+    //       data[i][j] = {
+    //         value: '0',
+    //         guess: ['' + Math.floor(Math.random() * 10 + 1)],
+    //         type: 1,
+    //       }
+    //     }
+    //   }
+    // }
+    const data = [
+      [
+        {'value':'5', type: 0},
+        {},
+        {'value':'1', type: 0},
+        {},
+        {'value':'9', type: 0},
+        {},
+        {'value':'4', type: 0},
+        {'value':'2', type: 0},
+        {'value':'8', type: 0},
+      ],
+      [
+        {'value':'4', type: 0},
+        {},
+        {'value':'2', type: 0},
+        {},
+        {},
+        {'value':'3', type: 0},
+        {'value':'1', type: 0},
+        {},
+        {},
+      ],
+      [
+        {},
+        {'value':'9', type: 0},
+        {},
+        {},
+        {},
+        {'value':'1', type: 0},
+        {'value':'6', type: 0},
+        {},
+        {'value':'3', type: 0},
+      ],
+      [
+        {},
+        {},
+        {},
+        {},
+        {'value':'1', type: 0},
+        {},
+        {'value':'9', type: 0},
+        {'value':'8', type: 0},
+        {},
+      ],
+      [
+        {},
+        {'value':'2', type: 0},
+        {},
+        {'value':'5', type: 0},
+        {},
+        {'value':'7', type: 0},
+        {},
+        {'value':'6', type: 0},
+        {},
+      ],
+      [
+        {},
+        {'value':'8', type: 0},
+        {'value':'5', type: 0},
+        {},
+        {'value':'6', type: 0},
+        {},
+        {},
+        {},
+        {},
+      ],
+      [
+        {'value':'9', type: 0},
+        {},
+        {'value':'6', type: 0},
+        {'value':'1', type: 0},
+        {},
+        {},
+        {},
+        {'value':'3', type: 0},
+        {},
+      ],
+      [
+        {},
+        {},
+        {'value':'3', type: 0},
+        {'value':'6', type: 0},
+        {},
+        {},
+        {'value':'7', type: 0},
+        {},
+        {'value':'9', type: 0},
+      ],
+      [
+        {'value':'2', type: 0},
+        {'value':'4', type: 0},
+        {'value':'7', type: 0},
+        {},
+        {'value':'3', type: 0},
+        {},
+        {'value':'5', type: 0},
+        {},
+        {'value':'6', type: 0},
+      ]
+    ]
+    this.setData({data: data});
   },
 
   tapBox(e) {
     const x = e.currentTarget.dataset.x;
     const y = e.currentTarget.dataset.y;
     let data = this.data.data;
-    this.setData({
-      currSelectedBoxInSignalMode: x * 9 + y
-    })
+    this.setData({currSelectedBoxInSignalMode: x * 9 + y});
     // base box, can not changed value
     if (data[x][y].type === 0) {
       return;
@@ -86,6 +183,7 @@ Page({
     if (this.data.currCheckedIndex === '10') {
       data[x][y].value = '0';
       data[x][y].guess = [];
+      this.check(data, x, y);
     } else {
       // signal mode, the inputing action is in btn taped
       if (this.data.isSignalNumMode) {
@@ -111,9 +209,7 @@ Page({
         this.check(data, x, y);
       }
     }
-    this.setData({
-      data: data
-    })
+    this.setData({data: data});
   },
 
   tapBtn(e) {
@@ -123,7 +219,7 @@ Page({
       const x = Math.floor(this.data.currSelectedBoxInSignalMode / 9), y = this.data.currSelectedBoxInSignalMode % 9;
       let data = this.data.data;
       // signal mode、num btn clicked、 box has not ever clicked、not base box
-      if (this.data.isSignalNumMode && index < 10 && this.data.currSelectedBoxInSignalMode >= 0 && data[x][y].type === 1) {
+      if (this.data.isSignalNumMode && index < 10 && this.data.currSelectedBoxInSignalMode >= 0 && data[x][y].type !== 0) {
         if (this.data.isGuessMode) {
           if (data[x][y].guess.indexOf(index) === -1) {
             data[x][y].guess.push(index);
@@ -137,7 +233,7 @@ Page({
           }
         } else {
           if (data[x][y].value === index) {
-            data[x][y].value = 0;
+            data[x][y].value = '0';
           } else {
             data[x][y].value = index;
           }
@@ -154,27 +250,50 @@ Page({
   },
 
   check(data, x, y) {
-    // data.forEach(row => {
-    //   row.forEach(item => {
-    //     item.duplicate = false;
-    //   })
-    // })
+    data[x][y].duplicate = false;
     // check 9 square
     const square = this.bigBox[Math.floor(x / 3) * 3 + Math.floor(y / 3)];
     square.forEach(element => {
+      const a = Math.floor(element / 9), b = Math.floor(element % 9);
+      if (x !== a && y !== b) {
+        data[a][b].duplicate = false;
+      }
       square.forEach(anotherElement => {
         if (element != anotherElement) {
-          x = Math.floor(element / 9), y = Math.floor(element % 9);
           const p = Math.floor(anotherElement / 9), q = anotherElement % 9;
-          if (data[x][y].value === data[p][q].value) {
-            data[x][y].duplicate = true;
+          if (data[a][b].value === data[p][q].value) {
+            data[a][b].duplicate = true;
             data[p][q].duplicate = true;
           }
         }
       })
     });
-    this.setData({
-      data: data
-    })
+
+    // check row
+    for (let b = 0; b < 9; ++b) {
+      if (b != y) {
+        data[x][b].duplicate = false;
+      }
+      for (let q = 0; q < 9; ++q) {
+        if (b !== q && data[x][b].value === data[x][q].value) {
+          data[x][b].duplicate = true;
+          data[x][q].duplicate = true;
+        }
+      }
+    }
+
+    // check column
+    for (let a = 0; a < 9; ++a) {
+      if (a != x) {
+        data[a][y].duplicate = false;
+      }
+      for (let p = 0; p < 9; ++p) {
+        if (a !== p && data[a][y].value === data[p][y].value) {
+          data[a][y].duplicate = true;
+          data[p][y].duplicate = true;
+        }
+      }
+    }
+    this.setData({data: data});
   }
 })
