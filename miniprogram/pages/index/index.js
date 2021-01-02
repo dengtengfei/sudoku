@@ -1,8 +1,10 @@
 //index.js
 const app = getApp()
+const db = wx.cloud.database()
 
 Page({
   data: {
+    data: undefined,
     deviceInfo: null,
     boxSize: 30,
     fontSize: Number,
@@ -15,11 +17,8 @@ Page({
     sideSize: 0,
     inputCount: undefined
   },
-
-  onLoad: function () {
-    this.initSize();
-    this.initData();
-  },
+  id: '2',
+  dbName: 'sudokuBase',
   bigBox: [
     [0, 1, 2, 9, 10, 11, 18, 19, 20],
     [3, 4, 5, 12, 13, 14, 21, 22, 23],
@@ -31,6 +30,11 @@ Page({
     [57, 58, 59, 66, 67, 68, 75, 76, 77],
     [60, 61, 62, 69, 70, 71, 78, 79, 80]
   ],
+
+  onLoad: function () {
+    this.initSize();
+    this.initData();
+  },
 
   initSize() {
     let deviceInfo = app.deviceInfo;
@@ -49,140 +53,53 @@ Page({
   },
 
   initData() {
-    // let data = new Array(9)
-    // for (let i = 0; i < 9; i++) {
-    //   data[i] = new Array(9)
-    //   for (let j = 0; j < 9; j++) {
-    //     if (Math.floor(Math.random() * 10 + 1) % 2 === 1) {
-    //       data[i][j] = {
-    //         value: j + 1 + '',
-    //         guess: [],
-    //         type: 0,
-    //       }
-    //     } else {
-    //       data[i][j] = {
-    //         value: '0',
-    //         guess: ['' + Math.floor(Math.random() * 10 + 1)],
-    //         type: 1,
-    //       }
-    //     }
-    //   }
-    // }
-    const data = [
-      [
-        {'value':'5', type: 0, guess: []},
-        {guess: []},
-        {'value':'1', type: 0, guess: []},
-        {guess: []},
-        {'value':'9', type: 0, guess: []},
-        {guess: []},
-        {'value':'4', type: 0, guess: []},
-        {'value':'2', type: 0, guess: []},
-        {'value':'8', type: 0, guess: []},
-      ],
-      [
-        {'value':'4', type: 0, guess: []},
-        {guess: []},
-        {'value':'2', type: 0, guess: []},
-        {guess: []},
-        {guess: []},
-        {'value':'3', type: 0, guess: []},
-        {'value':'1', type: 0, guess: []},
-        {guess: []},
-        {guess: []},
-      ],
-      [
-        {guess: []},
-        {'value':'9', type: 0, guess: []},
-        {guess: []},
-        {guess: []},
-        {guess: []},
-        {'value':'1', type: 0, guess: []},
-        {'value':'6', type: 0, guess: []},
-        {guess: []},
-        {'value':'3', type: 0, guess: []},
-      ],
-      [
-        {guess: []},
-        {guess: []},
-        {guess: []},
-        {guess: []},
-        {'value':'1', type: 0, guess: []},
-        {guess: []},
-        {'value':'9', type: 0, guess: []},
-        {'value':'8', type: 0, guess: []},
-        {guess: []},
-      ],
-      [
-        {guess: []},
-        {'value':'2', type: 0, guess: []},
-        {guess: []},
-        {'value':'5', type: 0, guess: []},
-        {guess: []},
-        {'value':'7', type: 0, guess: []},
-        {guess: []},
-        {'value':'6', type: 0, guess: []},
-        {guess: []},
-      ],
-      [
-        {guess: []},
-        {'value':'8', type: 0, guess: []},
-        {'value':'5', type: 0, guess: []},
-        {guess: []},
-        {'value':'6', type: 0, guess: []},
-        {guess: []},
-        {guess: []},
-        {guess: []},
-        {guess: []},
-      ],
-      [
-        {'value':'9', type: 0, guess: []},
-        {guess: []},
-        {'value':'6', type: 0, guess: []},
-        {'value':'1', type: 0, guess: []},
-        {guess: []},
-        {guess: []},
-        {guess: []},
-        {'value':'3', type: 0, guess: []},
-        {guess: []},
-      ],
-      [
-        {guess: []},
-        {guess: []},
-        {'value':'3', type: 0, guess: []},
-        {'value':'6', type: 0, guess: []},
-        {guess: []},
-        {guess: []},
-        {'value':'7', type: 0, guess: []},
-        {guess: []},
-        {'value':'9', type: 0, guess: []},
-      ],
-      [
-        {'value':'2', type: 0, guess: []},
-        {'value':'4', type: 0, guess: []},
-        {'value':'7', type: 0, guess: []},
-        {guess: []},
-        {'value':'3', type: 0, guess: []},
-        {guess: []},
-        {'value':'5', type: 0, guess: []},
-        {guess: []},
-        {'value':'6', type: 0, guess: []},
-      ]
-    ]
-    let inputCount = new Array(10);
-    for (let i = 0; i < 10; ++i) {
-      inputCount[i] = 0;
+    wx.showLoading({
+      title: '加载中',
+    });
+    let data = new Array(9);
+    for (let i = 0; i < 9; i++) {
+      data[i] = new Array(9);
     }
-    for (let i = 0; i < 9; ++i) {
-      for (let j = 0; j < 9; ++j) {
-        if (data[i][j].value > 0) {
-          ++inputCount[data[i][j].value];
+    this.setData({data: data});
+    let _this = this;
+    db.collection(_this.dbName).doc(_this.id).get().then(res => {
+      // res.data 包含该记录的数据
+      
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          data[i][j] = {
+            value: res.data.data[i][j].value,
+            guess: [],
+            type: res.data.data[i][j].type,
+          }
         }
       }
-    }
-    this.setData({
-      data: data,
-      inputCount: inputCount
+      
+      let inputCount = new Array(10);
+      for (let i = 0; i < 10; ++i) {
+        inputCount[i] = 0;
+      }
+      for (let i = 0; i < 9; ++i) {
+        for (let j = 0; j < 9; ++j) {
+          if (data[i][j].value > 0) {
+            ++inputCount[data[i][j].value];
+          }
+        }
+      }
+      _this.setData({
+        data: data,
+        inputCount: inputCount
+      });
+      wx.hideLoading();
+    })
+    .catch(function (err) {
+      wx.hideLoading();
+      wx.showToast({
+        title: '获取数独失败',
+        icon : 'error',
+        duration: 3000
+      })
+      console.error(err);
     });
   },
 
@@ -329,5 +246,19 @@ Page({
       }
     }
     this.setData({data: data});
+  },
+
+  tapLast() {
+    if (this.id > 1) {
+      this.id = Math.floor(this.id) - 1 + '';
+      this.initData();
+    }
+  },
+
+  tapNext() {
+    if (this.id < 4000) {
+      this.id = Math.floor(this.id) + 1 + '';
+      this.initData();
+    }
   }
 })
