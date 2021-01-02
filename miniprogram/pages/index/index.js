@@ -13,6 +13,7 @@ Page({
     isSignalNumMode: false,
     currSelectedBoxInSignalMode: -1,
     sideSize: 0,
+    inputCount: undefined
   },
 
   onLoad: function () {
@@ -43,7 +44,7 @@ Page({
       fontSize: fontSize,
       guessBoxSize: guessBoxSize,
       guessFontSize: guessFontSize,
-      sideSize: (deviceInfo.windowHeight - deviceInfo.windowWidth) / 2,
+      sideSize: (deviceInfo.windowHeight - deviceInfo.windowWidth),
     })
   },
 
@@ -69,121 +70,138 @@ Page({
     // }
     const data = [
       [
-        {'value':'5', type: 0},
-        {},
-        {'value':'1', type: 0},
-        {},
-        {'value':'9', type: 0},
-        {},
-        {'value':'4', type: 0},
-        {'value':'2', type: 0},
-        {'value':'8', type: 0},
+        {'value':'5', type: 0, guess: []},
+        {guess: []},
+        {'value':'1', type: 0, guess: []},
+        {guess: []},
+        {'value':'9', type: 0, guess: []},
+        {guess: []},
+        {'value':'4', type: 0, guess: []},
+        {'value':'2', type: 0, guess: []},
+        {'value':'8', type: 0, guess: []},
       ],
       [
-        {'value':'4', type: 0},
-        {},
-        {'value':'2', type: 0},
-        {},
-        {},
-        {'value':'3', type: 0},
-        {'value':'1', type: 0},
-        {},
-        {},
+        {'value':'4', type: 0, guess: []},
+        {guess: []},
+        {'value':'2', type: 0, guess: []},
+        {guess: []},
+        {guess: []},
+        {'value':'3', type: 0, guess: []},
+        {'value':'1', type: 0, guess: []},
+        {guess: []},
+        {guess: []},
       ],
       [
-        {},
-        {'value':'9', type: 0},
-        {},
-        {},
-        {},
-        {'value':'1', type: 0},
-        {'value':'6', type: 0},
-        {},
-        {'value':'3', type: 0},
+        {guess: []},
+        {'value':'9', type: 0, guess: []},
+        {guess: []},
+        {guess: []},
+        {guess: []},
+        {'value':'1', type: 0, guess: []},
+        {'value':'6', type: 0, guess: []},
+        {guess: []},
+        {'value':'3', type: 0, guess: []},
       ],
       [
-        {},
-        {},
-        {},
-        {},
-        {'value':'1', type: 0},
-        {},
-        {'value':'9', type: 0},
-        {'value':'8', type: 0},
-        {},
+        {guess: []},
+        {guess: []},
+        {guess: []},
+        {guess: []},
+        {'value':'1', type: 0, guess: []},
+        {guess: []},
+        {'value':'9', type: 0, guess: []},
+        {'value':'8', type: 0, guess: []},
+        {guess: []},
       ],
       [
-        {},
-        {'value':'2', type: 0},
-        {},
-        {'value':'5', type: 0},
-        {},
-        {'value':'7', type: 0},
-        {},
-        {'value':'6', type: 0},
-        {},
+        {guess: []},
+        {'value':'2', type: 0, guess: []},
+        {guess: []},
+        {'value':'5', type: 0, guess: []},
+        {guess: []},
+        {'value':'7', type: 0, guess: []},
+        {guess: []},
+        {'value':'6', type: 0, guess: []},
+        {guess: []},
       ],
       [
-        {},
-        {'value':'8', type: 0},
-        {'value':'5', type: 0},
-        {},
-        {'value':'6', type: 0},
-        {},
-        {},
-        {},
-        {},
+        {guess: []},
+        {'value':'8', type: 0, guess: []},
+        {'value':'5', type: 0, guess: []},
+        {guess: []},
+        {'value':'6', type: 0, guess: []},
+        {guess: []},
+        {guess: []},
+        {guess: []},
+        {guess: []},
       ],
       [
-        {'value':'9', type: 0},
-        {},
-        {'value':'6', type: 0},
-        {'value':'1', type: 0},
-        {},
-        {},
-        {},
-        {'value':'3', type: 0},
-        {},
+        {'value':'9', type: 0, guess: []},
+        {guess: []},
+        {'value':'6', type: 0, guess: []},
+        {'value':'1', type: 0, guess: []},
+        {guess: []},
+        {guess: []},
+        {guess: []},
+        {'value':'3', type: 0, guess: []},
+        {guess: []},
       ],
       [
-        {},
-        {},
-        {'value':'3', type: 0},
-        {'value':'6', type: 0},
-        {},
-        {},
-        {'value':'7', type: 0},
-        {},
-        {'value':'9', type: 0},
+        {guess: []},
+        {guess: []},
+        {'value':'3', type: 0, guess: []},
+        {'value':'6', type: 0, guess: []},
+        {guess: []},
+        {guess: []},
+        {'value':'7', type: 0, guess: []},
+        {guess: []},
+        {'value':'9', type: 0, guess: []},
       ],
       [
-        {'value':'2', type: 0},
-        {'value':'4', type: 0},
-        {'value':'7', type: 0},
-        {},
-        {'value':'3', type: 0},
-        {},
-        {'value':'5', type: 0},
-        {},
-        {'value':'6', type: 0},
+        {'value':'2', type: 0, guess: []},
+        {'value':'4', type: 0, guess: []},
+        {'value':'7', type: 0, guess: []},
+        {guess: []},
+        {'value':'3', type: 0, guess: []},
+        {guess: []},
+        {'value':'5', type: 0, guess: []},
+        {guess: []},
+        {'value':'6', type: 0, guess: []},
       ]
     ]
-    this.setData({data: data});
+    let inputCount = new Array(10);
+    for (let i = 0; i < 10; ++i) {
+      inputCount[i] = 0;
+    }
+    for (let i = 0; i < 9; ++i) {
+      for (let j = 0; j < 9; ++j) {
+        if (data[i][j].value > 0) {
+          ++inputCount[data[i][j].value];
+        }
+      }
+    }
+    this.setData({
+      data: data,
+      inputCount: inputCount
+    });
   },
 
   tapBox(e) {
     const x = e.currentTarget.dataset.x;
     const y = e.currentTarget.dataset.y;
-    let data = this.data.data;
+    let data = this.data.data, inputCount = this.data.inputCount;
     this.setData({currSelectedBoxInSignalMode: x * 9 + y});
     // base box, can not changed value
     if (data[x][y].type === 0) {
       return;
     }
     if (this.data.currCheckedIndex === '10') {
-      data[x][y].value = '0';
+      if (data[x][y].value > 0) {
+        --inputCount[data[x][y].value];
+        data[x][y].value = '0';
+        this.check(data, x, y);
+      }
       data[x][y].guess = [];
-      this.check(data, x, y);
     } else {
       // signal mode, the inputing action is in btn taped
       if (this.data.isSignalNumMode) {
@@ -203,13 +221,21 @@ Page({
       } else {
         if (data[x][y].value === this.data.currCheckedIndex) {
           data[x][y].value = '0';
+          --inputCount[this.data.currCheckedIndex];
         } else {
+          if (data[x][y].value != undefined) {
+            --inputCount[data[x][y].value];
+          }
           data[x][y].value = this.data.currCheckedIndex;
+          ++inputCount[this.data.currCheckedIndex];
         }
         this.check(data, x, y);
       }
     }
-    this.setData({data: data});
+    this.setData({
+      data: data,
+      inputCount: inputCount
+    });
   },
 
   tapBtn(e) {
@@ -217,7 +243,7 @@ Page({
     // clear <== 10
     if (index <= 10) {
       const x = Math.floor(this.data.currSelectedBoxInSignalMode / 9), y = this.data.currSelectedBoxInSignalMode % 9;
-      let data = this.data.data;
+      let data = this.data.data, inputCount = this.data.inputCount;
       // signal mode、num btn clicked、 box has not ever clicked、not base box
       if (this.data.isSignalNumMode && index < 10 && this.data.currSelectedBoxInSignalMode >= 0 && data[x][y].type !== 0) {
         if (this.data.isGuessMode) {
@@ -234,12 +260,20 @@ Page({
         } else {
           if (data[x][y].value === index) {
             data[x][y].value = '0';
+            --inputCount[index];
           } else {
+            if (data[x][y].value != undefined) {
+              --inputCount[data[x][y].value];
+            }
             data[x][y].value = index;
+            ++inputCount[index];
           }
           this.check(data, x, y);
         }
-        this.setData({data: data});
+        this.setData({
+          data: data,
+          inputCount: inputCount
+        });
       }
       this.setData({currCheckedIndex: index});
     } else if (index === 'G') {
