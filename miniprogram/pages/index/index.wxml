@@ -2,7 +2,7 @@
 <view class="sudoku" style="margin-top:{{(sideSize-(deviceInfo.windowWidth - 15) / 4.5 - 12.5) / 2}}px">
   <view wx:for="{{data}}" wx:key="" class="row" wx:for-index="x">
     <block wx:key="" wx:for="{{item}}" wx:for-index="y">
-      <view class="{{item.type !== 0 ? ('box ' + (x * 9 + y === currSelectedBoxInSignalMode ? (item.value !== '0' && item.duplicate?'selected duplicate ': 'selected normal ') : (item.value !== '0' && item.duplicate?'unselected duplicate ': 'unselected normal '))) : (x * 9 + y === currSelectedBoxInSignalMode?(item.value !== '0' && item.duplicate?'box base selected duplicate':'box base selected normal'):(item.value !== '0' && item.duplicate?'box base unselected duplicate':'box base unselected normal'))}}"
+      <view class="{{item.type !== 0 ? ('box ' + (x * 9 + y === currSelectedBoxInSingleMode ? (item.value !== '0' && item.duplicate?'selected duplicate ': 'selected normal ') : (item.value !== '0' && item.duplicate?'unselected duplicate ': 'unselected normal '))) : (x * 9 + y === currSelectedBoxInSingleMode?(item.value !== '0' && item.duplicate?'box base selected duplicate':'box base selected normal'):(item.value !== '0' && item.duplicate?'box base unselected duplicate':'box base unselected normal'))}}"
         data-info="{{item}}" data-x="{{x}}" data-y="{{y}}" catchtap='tapBox' style="width: {{boxSize}}px; height: {{boxSize}}px; ">
         <view wx:if="{{item.value !== '0'}}" style="font-size: {{fontSize*0.8}}px">
           {{item.value !== '0' ? item.value : (item.fill || '')}}</view>
@@ -42,5 +42,5 @@
   <view class="{{'btn ' + (currCheckedIndex==='8'?(inputCount[8]>=9?'pressed finish':'pressed unfinish'):(inputCount[8]>=9?'normal finish':'normal unfinish'))}}" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; " catchtap='tapBtn' data-index = "8">8</view>
   <view class="{{'btn ' + (currCheckedIndex==='9'?(inputCount[9]>=9?'pressed finish':'pressed unfinish'):(inputCount[9]>=9?'normal finish':'normal unfinish'))}}" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; " catchtap='tapBtn' data-index = "9">9</view>
   <view class="{{'btn ' + (currCheckedIndex==='10'?(inputCount[10]>=9?'pressed finish':'pressed unfinish'):(inputCount[10]>=9?'normal finish':'normal unfinish'))}}" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; " catchtap='tapBtn' data-index = "10">C</view>
-  <view class="{{'btn ' + (isSignalNumMode?'pressed unfinish':'normal unfinish')}}" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; font-size: {{fontSize / 2.2}}px" catchtap='tapBtn' data-index = "M">Singal</view>
+  <view class="{{'btn ' + (isSingleNumMode?'pressed unfinish':'normal unfinish')}}" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; font-size: {{fontSize / 2.2}}px" catchtap='tapBtn' data-index = "M">Single</view>
 </view>

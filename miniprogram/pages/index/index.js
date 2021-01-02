@@ -10,8 +10,8 @@ Page({
     guessFontSize: Number,
     currCheckedIndex: '1',
     isGuessMode: false,
-    isSignalNumMode: false,
-    currSelectedBoxInSignalMode: -1,
+    isSingleNumMode: false,
+    currSelectedBoxInSingleMode: -1,
     sideSize: 0,
     inputCount: undefined
   },
@@ -190,7 +190,7 @@ Page({
     const x = e.currentTarget.dataset.x;
     const y = e.currentTarget.dataset.y;
     let data = this.data.data, inputCount = this.data.inputCount;
-    this.setData({currSelectedBoxInSignalMode: x * 9 + y});
+    this.setData({currSelectedBoxInSingleMode: x * 9 + y});
     // base box, can not changed value
     if (data[x][y].type === 0) {
       return;
@@ -203,8 +203,8 @@ Page({
       }
       data[x][y].guess = [];
     } else {
-      // signal mode, the inputing action is in btn taped
-      if (this.data.isSignalNumMode) {
+      // single mode, the inputing action is in btn taped
+      if (this.data.isSingleNumMode) {
         return;
       }
       if (this.data.isGuessMode) {
@@ -242,10 +242,10 @@ Page({
     const index = e.currentTarget.dataset.index;
     // clear <== 10
     if (index <= 10) {
-      const x = Math.floor(this.data.currSelectedBoxInSignalMode / 9), y = this.data.currSelectedBoxInSignalMode % 9;
+      const x = Math.floor(this.data.currSelectedBoxInSingleMode / 9), y = this.data.currSelectedBoxInSingleMode % 9;
       let data = this.data.data, inputCount = this.data.inputCount;
-      // signal mode、num btn clicked、 box has not ever clicked、not base box
-      if (this.data.isSignalNumMode && index < 10 && this.data.currSelectedBoxInSignalMode >= 0 && data[x][y].type !== 0) {
+      // single mode、num btn clicked、 box has not ever clicked、not base box
+      if (this.data.isSingleNumMode && index < 10 && this.data.currSelectedBoxInSingleMode >= 0 && data[x][y].type !== 0) {
         if (this.data.isGuessMode) {
           if (data[x][y].guess.indexOf(index) === -1) {
             data[x][y].guess.push(index);
@@ -279,7 +279,7 @@ Page({
     } else if (index === 'G') {
       this.setData({isGuessMode: !this.data.isGuessMode});
     } else if (index === 'M') {
-      this.setData({isSignalNumMode: !this.data.isSignalNumMode});
+      this.setData({isSingleNumMode: !this.data.isSingleNumMode});
     }
   },
 
