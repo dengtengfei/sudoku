@@ -1,5 +1,13 @@
 <wxs src="index.wxs" module="tools" />
-<view class="sudoku" style="margin-top:{{(sideSize-(deviceInfo.windowWidth - 15) / 4.5 - 12.5) / 2}}px">
+<view class="modal-mask" bindtap="hideModal" catchtouchmove="true" wx:if="{{showModal}}"></view>
+<view class="modal-dialog" wx:if="{{showModal}}" style="font-size: {{fontSize*0.8}}px">
+    <view class="modal-title">菜单</view>
+    <view class="btn normal unfinish">清除所有提示</view>
+    <view class="btn normal unfinish">重玩本关</view>
+    <view class="btn normal unfinish">首页</view>
+</view>
+<view class="sudoku" style="margin-top:{{(sideSize-(deviceInfo.windowWidth - 15) / 4.5 - 12.5 - boxSize) / 2}}px">
+  <view catchtap='showModal' style="margin-left:{{boxSize + 2}}px; margin-bottom:10px; width: {{boxSize}}px; height: {{boxSize}}px; background:#cecece; border-radius:10px"></view>
   <view wx:for="{{data}}" wx:key="id" class="row" wx:for-index="x">
     <block wx:key="id" wx:for="{{item}}" wx:for-index="y">
       <view class="{{item.type !== 0 ? ('box ' + (x * 9 + y === currSelectedBoxInSingleMode ? (item.value !== '0' && item.duplicate?'selected duplicate ': 'selected normal ') : (item.value !== '0' && item.duplicate?'unselected duplicate ': 'unselected normal '))) : (x * 9 + y === currSelectedBoxInSingleMode?(item.value !== '0' && item.duplicate?'box base selected duplicate':'box base selected normal'):(item.value !== '0' && item.duplicate?'box base unselected duplicate':'box base unselected normal'))}}"
@@ -44,7 +52,7 @@
   <view class="{{'btn ' + (currCheckedIndex==='10'?(inputCount[10]>=9?'pressed finish':'pressed unfinish'):(inputCount[10]>=9?'normal finish':'normal unfinish'))}}" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; " catchtap='tapBtn' data-index = "10">C</view>
   <view class="{{'btn ' + (isSingleNumMode?'pressed unfinish':'normal unfinish')}}" style="width:{{(deviceInfo.windowWidth - 15) / 6.0}}px; font-size: {{fontSize / 2.2}}px" catchtap='tapBtn' data-index = "M">Single</view>
 </view>
-<view style="display:flex; flex-direction: row; margin-top: 2.5px;">
+<!-- <view style="display:flex; flex-direction: row; margin-top: 2.5px;">
   <button bindtap="tapLast" style="background:#cecece; color: #000">last</button>
   <button bindtap="tapNext" style="background:#cecece; color: #000">next</button>
-</view>
+</view> -->

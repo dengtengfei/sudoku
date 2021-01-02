@@ -15,7 +15,8 @@ Page({
     isSingleNumMode: false,
     currSelectedBoxInSingleMode: -1,
     sideSize: 0,
-    inputCount: undefined
+    inputCount: undefined,
+    showModal: false
   },
   id: '2',
   dbName: 'sudokuBase',
@@ -147,6 +148,7 @@ Page({
           ++inputCount[this.data.currCheckedIndex];
         }
         this.check(data, x, y);
+        this.checkFinish(data);
       }
     }
     this.setData({
@@ -186,6 +188,7 @@ Page({
             ++inputCount[index];
           }
           this.check(data, x, y);
+          this.checkFinish(data);
         }
         this.setData({
           data: data,
@@ -246,6 +249,36 @@ Page({
       }
     }
     this.setData({data: data});
+  },
+
+  checkFinish(data) {
+    for (let i = 1; i < 10; ++i) {
+      if (this.data.inputCount[i] != 9){
+        return false;
+      }
+    }
+    for (let i = 0; i < 9; ++i) {
+      for (let j = 0; j < 9; ++j) {
+        if (data[i][j].duplicate) {
+          return false;
+        }
+      }
+    }
+    wx.showModal({
+      title: '干的漂亮',
+      content: '用时' + this.data.time,
+      showCancel: false,
+      success (res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+        } 
+      }
+    })
+    return true;
+  },
+
+  showModal() {
+    this.setData({showModal: true});
   },
 
   tapLast() {
